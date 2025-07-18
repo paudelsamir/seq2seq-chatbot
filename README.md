@@ -7,4 +7,4 @@ Just download it, put it in the project folder, and you’re good to go!
 ## Demo
 Check out how it works:
 
-<video controls src="demo.mp4" title="Title"></video>
+[<video controls src="demo.mp4" title="Title"></video>](https://github.com/user-attachments/assets/34fbf8b2-b575-407a-9b67-57ec68c59514)
