@@ -48,7 +48,7 @@ def download_checkpoint_if_missing(google_drive_file_id, directory):
         print(f"Checkpoint already exists at: {local_path}")
 
 def loadCheckpoint(checkpoint_path, corpus_name, hidden_size, encoder_n_layers, decoder_n_layers, dropout, attn_model):
-    checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
+    checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'), weights_only=False)
     
     encoder_sd = checkpoint['en']
     decoder_sd = checkpoint['de']
