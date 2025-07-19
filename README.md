@@ -1,6 +1,6 @@
 <!-- ![Demo Screenshot](demo.png) -->
 ## Download the Model
-You can get the model from [Hugging Face]([https://huggingface.co/paudelsamir/my-checkpoints/tree/main]).
+You can get the model from [Hugging Face](https://huggingface.co/paudelsamir/my-checkpoints/tree/main).
 
 Just clone the project and run locally !
 
