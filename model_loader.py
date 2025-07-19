@@ -7,27 +7,49 @@ from models import Voc, EncoderRNN, LuongAttnDecoderRNN, GreedySearchDecoder, de
 
 def download_from_google_drive(file_id, local_path):
     """Download file from Google Drive using file ID"""
-    url = f"https://drive.google.com/uc?id={file_id}&export=download"
+    # Use the direct download URL for Google Drive
+    url = f"https://drive.google.com/uc?export=download&id={file_id}"
     
     # Create directory if it doesn't exist
     os.makedirs(os.path.dirname(local_path), exist_ok=True)
     
-    # Download with progress
+    # Download with session to handle redirects
     with st.spinner("Downloading model from Google Drive..."):
-        response = requests.get(url, stream=True)
+        session = requests.Session()
+        
+        # First request to get the download page
+        response = session.get(url, stream=True)
         response.raise_for_status()
         
-        total_size = int(response.headers.get('content-length', 0))
+        # Check if we need to handle the virus scan warning
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                # Get the confirmation URL
+                confirm_url = f"https://drive.google.com/uc?export=download&confirm={value}&id={file_id}"
+                response = session.get(confirm_url, stream=True)
+                break
         
+        # Verify we got a valid file (not HTML)
+        content_type = response.headers.get('content-type', '')
+        if 'text/html' in content_type:
+            # Try alternative download method
+            response = session.get(f"https://drive.google.com/uc?export=download&id={file_id}&confirm=t", stream=True)
+        
+        # Save the file
         with open(local_path, 'wb') as f:
-            if total_size == 0:
-                f.write(response.content)
-            else:
-                downloaded = 0
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-                        downloaded += len(chunk)
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        
+        # Verify the file is a valid tar file
+        try:
+            import tarfile
+            with tarfile.open(local_path, 'r') as tar:
+                tar.getnames()  # Just check if it's a valid tar file
+            print(f"Successfully downloaded and verified model: {local_path}")
+        except Exception as e:
+            os.remove(local_path)  # Remove invalid file
+            raise Exception(f"Downloaded file is not a valid checkpoint: {e}")
         
         print(f"Downloaded model to: {local_path}")
 
