@@ -1,3 +1,4 @@
+### [Notebook of the project](https://github.com/paudelsamir/365DaysOfData/blob/main/10-Projects-Based-ML-DL/02-Natural-Language-Processing/seq2seq-charbot/chatbot.ipynb)
 A sequence-to-sequence neural network chatbot trained on the Cornell Movie-Dialogs Corpus. This project implements an encoder-decoder architecture with attention mechanism to generate conversational responses.
 
 
