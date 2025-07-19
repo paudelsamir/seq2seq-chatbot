@@ -5,13 +5,16 @@ data/save/chatbot_model/movie-corpus/2-2_500/2000_checkpoint.tar
 data/save/chatbot_model/movie-corpus/2-2_500/2500_checkpoint.tar
 data/save/chatbot_model/movie-corpus/2-2_500/3000_checkpoint.tar
 data/save/chatbot_model/movie-corpus/2-2_500/3500_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/4000_checkpoint.tar
+# data/save/chatbot_model/movie-corpus/2-2_500/4000_checkpoint.tar
 data/save/chatbot_model/movie-corpus/2-2_500/500_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/1000_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/1500_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/2000_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/2500_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/3000_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/3500_checkpoint.tar
+
+demo.gif
+other_data/2-2_500/1000_checkpoint.tar
+other_data/2-2_500/1500_checkpoint.tar
+other_data/2-2_500/2000_checkpoint.tar
+other_data/2-2_500/2500_checkpoint.tar
+other_data/2-2_500/3000_checkpoint.tar
+other_data/2-2_500/3500_checkpoint.tar
+other_data/2-2_500/4000_checkpoint.tar
+other_data/2-2_500/500_checkpoint.tar
 data/save/chatbot_model/movie-corpus/2-2_500/4000_checkpoint.tar
-data/save/chatbot_model/movie-corpus/2-2_500/500_checkpoint.tar
