@@ -1,8 +1,8 @@
 <!-- ![Demo Screenshot](demo.png) -->
 ## Download the Model
-You can get the model from [Google Drive](https://drive.google.com/file/d/1DFdRoXweBM0qsrg9Uwg58_pICwOUlWjt/view?usp=drive_link).
+You can get the model from [Hugging Face]([https://drive.google.com/file/d/1DFdRoXweBM0qsrg9Uwg58_pICwOUlWjt/view?usp=drive_link](https://huggingface.co/paudelsamir/my-checkpoints/tree/main)).
 
-Just download it, put it in the project folder, and you’re good to go!
+Just clone the project and run locally !
 
 ## Demo
 Check out how it works:
