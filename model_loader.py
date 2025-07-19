@@ -2,56 +2,33 @@ import torch
 import torch.nn as nn
 import os
 import streamlit as st
-import requests
+import gdown
 from models import Voc, EncoderRNN, LuongAttnDecoderRNN, GreedySearchDecoder, device
 
 def download_from_google_drive(file_id, local_path):
-    """Download file from Google Drive using file ID"""
-    # Use the direct download URL for Google Drive
-    url = f"https://drive.google.com/uc?export=download&id={file_id}"
-    
+    """Download file from Google Drive using gdown"""
     # Create directory if it doesn't exist
     os.makedirs(os.path.dirname(local_path), exist_ok=True)
     
-    # Download with session to handle redirects
+    # Download with gdown
     with st.spinner("Downloading model from Google Drive..."):
-        session = requests.Session()
-        
-        # First request to get the download page
-        response = session.get(url, stream=True)
-        response.raise_for_status()
-        
-        # Check if we need to handle the virus scan warning
-        for key, value in response.cookies.items():
-            if key.startswith('download_warning'):
-                # Get the confirmation URL
-                confirm_url = f"https://drive.google.com/uc?export=download&confirm={value}&id={file_id}"
-                response = session.get(confirm_url, stream=True)
-                break
-        
-        # Verify we got a valid file (not HTML)
-        content_type = response.headers.get('content-type', '')
-        if 'text/html' in content_type:
-            # Try alternative download method
-            response = session.get(f"https://drive.google.com/uc?export=download&id={file_id}&confirm=t", stream=True)
-        
-        # Save the file
-        with open(local_path, 'wb') as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    f.write(chunk)
-        
-        # Verify the file is a valid tar file
         try:
-            import tarfile
-            with tarfile.open(local_path, 'r') as tar:
-                tar.getnames()  # Just check if it's a valid tar file
-            print(f"Successfully downloaded and verified model: {local_path}")
+            # Use gdown to download the file
+            url = f"https://drive.google.com/uc?id={file_id}"
+            gdown.download(url, local_path, quiet=False)
+            
+            # Verify the file size is reasonable (should be > 1MB for a model)
+            file_size = os.path.getsize(local_path)
+            if file_size < 1024 * 1024:  # Less than 1MB
+                raise Exception(f"Downloaded file is too small ({file_size} bytes), likely an error page")
+            
+            print(f"Successfully downloaded model: {local_path} ({file_size} bytes)")
+            
         except Exception as e:
-            os.remove(local_path)  # Remove invalid file
-            raise Exception(f"Downloaded file is not a valid checkpoint: {e}")
-        
-        print(f"Downloaded model to: {local_path}")
+            # Clean up if download failed
+            if os.path.exists(local_path):
+                os.remove(local_path)
+            raise Exception(f"Failed to download from Google Drive: {e}")
 
 def download_checkpoint_if_missing(google_drive_file_id, directory):
     filename = "4000_checkpoint.tar"
@@ -64,7 +41,10 @@ def download_checkpoint_if_missing(google_drive_file_id, directory):
             print(f"Successfully downloaded checkpoint to: {local_path}")
         except Exception as e:
             st.error(f"❌ Failed to download model from Google Drive: {e}")
-            st.error("Please check if the Google Drive file is publicly accessible")
+            st.error("**Please ensure:**")
+            st.error("1. Your Google Drive file is set to 'Anyone with the link can view'")
+            st.error("2. The file is not corrupted")
+            st.error("3. Try re-uploading the file to Google Drive")
             raise e
     else:
         print(f"Checkpoint already exists at: {local_path}")
